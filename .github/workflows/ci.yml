@@ -25,6 +25,8 @@ jobs:
           components: rustfmt
       - name: rustfmt check
         uses: actions-rust-lang/rustfmt@v1
+      - name: clippy check
+        run: cargo clippy -- -D warnings
   build:
     name: cargo build (release mode)
     needs: [test, formatting]
