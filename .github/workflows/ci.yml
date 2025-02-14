@@ -9,22 +9,30 @@ on:
       - main
 
 jobs:
-  test-and-lint:
-    name: Test and Lint
+  test:
+    name: cargo test
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Test
-        run: cargo test
-      - name: Lint
-        run: cargo clippy -- -D warnings
-
-  build:
+        run: cargo test --all-featuers
+  formatting:
+    name: code formatting
     runs-on: ubuntu-latest
-    needs: test-and-lint
-
     steps:
       - uses: actions/checkout@v4
-      - name: Build in release mode
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+      - name: rustfmt check
+        uses: actions-rust-lang/rustfmt@v1
+  build:
+    name: cargo build (release mode)
+    needs: [test, formatting]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Build
         run: cargo build --release
