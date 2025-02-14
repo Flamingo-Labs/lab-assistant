@@ -1,5 +1,6 @@
 use std::env;
 
+use serenity::all::GuildId;
 use serenity::async_trait;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
